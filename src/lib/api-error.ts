@@ -21,6 +21,7 @@ export class ApiError extends Error {
     this.code = code;
     this.details = details;
 
-    Object.setPrototypeOf(this, new.target.prototype);
+    Object.setPrototypeOf(this, new.target.prototype); //during extending of the   Error class the prototype link get broke
+    //hence it corrects it
   }
 }
