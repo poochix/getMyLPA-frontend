@@ -44,19 +44,19 @@ apiClient.interceptors.response.use(
         }
       | undefined;
 
+    const statusCode = error.response?.status ?? 0;
+    const message =
+      responseData?.message ??
+      (error.code === 'ECONNABORTED'
+        ? 'The request timed out. Please try again.'
+        : error.response
+          ? 'Something went wrong while processing your request.'
+          : 'Unable to connect to the server. Please check your connection.');
+
     const apiError = new ApiError({
-      message:
-        responseData?.message ??
-        (error.code === 'ECONNABORTED'
-          ? 'The request timed out. Please try again.'
-          : error.response
-            ? 'Something went wrong while processing your request.'
-            : 'Unable to connect to the server. Please check your connection.'),
-
-      statusCode: error.response?.status ?? 0,
-
+      message,
+      statusCode,
       code: responseData?.code,
-
       details: responseData?.details,
     });
 
